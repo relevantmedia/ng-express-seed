@@ -3,6 +3,9 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
+//import routes
+import * as Routes from './routes';
+
 // Creates and configures an ExpressJS web server.
 class App {
 
@@ -14,6 +17,7 @@ class App {
     this.express = express();
     this.middleware();
     this.routes();
+    this.staticRoutes();
   }
 
   // Configure Express middleware.
@@ -25,17 +29,17 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    /* This is just to get up and running, and to make sure what we've got is
-     * working so far. This function will change when we start to add more
-     * API endpoints */
-    let router = express.Router();
-    // placeholder route handler
-    router.get('/', (req, res, next) => {
-      res.json({
-        message: 'Hello World!'
-      });
-    });
-    this.express.use('/', router);
+    this.express.use('/api', Routes.apiRouter);
+
+    // // Catch all other routes and return the index file
+    // this.express.get('*', (req, res) => {
+    //   res.sendFile(path.join(__dirname, '/../client/index.html'));
+    // });
+  }
+
+  private staticRoutes(): void {
+    // in production mode run application from dist folder
+    this.express.use(express.static(path.join(__dirname, '/../client')));
   }
 
 }
