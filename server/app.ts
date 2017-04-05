@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as express from 'express';
+import * as fs from 'fs';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
@@ -16,8 +17,28 @@ class App {
   constructor() {
     this.express = express();
     this.middleware();
-    this.routes();
     this.staticRoutes();
+    this.routes();
+    this.createReadStream();
+  }
+
+  private createReadStream(): void {
+    this.express.use((req, res, next) => {
+
+        // if the request is not html then move along
+        var accept = req.accepts('html', 'json', 'xml');
+        if(accept !== 'html'){
+            return next();
+        }
+
+        // if the request has a '.' assume that it's for a file, move along
+        var ext = path.extname(req.path);
+        if (ext !== ''){
+            return next();
+        }
+
+        fs.createReadStream('./dist/client/' + 'index.html').pipe(res);
+    });
   }
 
   // Configure Express middleware.
@@ -30,11 +51,6 @@ class App {
   // Configure API endpoints.
   private routes(): void {
     this.express.use('/api', Routes.apiRouter);
-
-    // // Catch all other routes and return the index file
-    // this.express.get('*', (req, res) => {
-    //   res.sendFile(path.join(__dirname, '/../client/index.html'));
-    // });
   }
 
   private staticRoutes(): void {
