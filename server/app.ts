@@ -50,7 +50,7 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    this.express.use('/api', Routes.apiRouter);
+    this.express.use('/api/v1', Routes.apiRouter);
   }
 
   private staticRoutes(): void {
