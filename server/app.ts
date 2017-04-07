@@ -5,7 +5,7 @@ import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
 //import routes
-import * as Routes from './routes';
+import {apiRouter} from './routes';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -50,7 +50,7 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    this.express.use('/api/v1', Routes.apiRouter);
+    this.express.use('/api/v1', apiRouter);
   }
 
   private staticRoutes(): void {

@@ -1,15 +1,11 @@
 // var knex = require('./knex.js');
-import * as db from './db';
+import {DB} from './db';
 
-function Answers() {
-  return db.knex('answers');
+export class Answers {
+  private answers = DB.knex('answers');
+
+  getAll() {
+    return this.answers.select();
+  }
+
 }
-
-// *** queries *** //
-
-function getAll() {
-  return Answers().select();
-}
-
-
-export { getAll }
