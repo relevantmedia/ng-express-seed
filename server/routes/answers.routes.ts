@@ -6,8 +6,6 @@ const ans = new Answers();
 
 // *** GET all shows *** //
 answersRouter.get('/', function(req, res, next) {
-  console.log('answers router /');
-
   ans.getAll()
     .then(function(shows) {
       res.status(200).json(shows);

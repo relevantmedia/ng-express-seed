@@ -1,4 +1,3 @@
-// var knex = require('./knex.js');
 import {DB} from './db';
 
 export class Answers {
